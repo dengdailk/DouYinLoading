@@ -11,27 +11,27 @@ import android.graphics.drawable.Drawable
 import android.view.animation.AccelerateDecelerateInterpolator
 
 
-class DouYinLoadingDrawable:Drawable(),Animatable {
+class DouYinLoadingDrawable : Drawable(), Animatable {
 
     private var leftBallPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private  var rightBallPaint:Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private  var coincideBallPaint:Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var rightBallPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private var coincideBallPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var leftBallPath: Path = Path()
-    private  var rightBallPath: Path = Path()
-    private  var coincideBallPath:Path = Path()
+    private var rightBallPath: Path = Path()
+    private var coincideBallPath: Path = Path()
 
     private var translate = 0f
-    private  var scale:Float = 0f
+    private var scale: Float = 0f
 
     var mCurrentDirection: Direction
 
     private var animatorSet: AnimatorSet? = null
 
     private var mWidth = 0f
-    private  var mHeight:Float = 0f
+    private var mHeight: Float = 0f
     private var centerX = 0f
-    private  var centerY:Float = 0f
+    private var centerY: Float = 0f
     private val radius = 20f
 
 
@@ -54,59 +54,66 @@ class DouYinLoadingDrawable:Drawable(),Animatable {
     }
 
 
-
     override fun draw(canvas: Canvas) {
 
-        if (mCurrentDirection == Direction.LEFT) {
-            canvas.save()
-            leftBallPath.reset()
-            leftBallPath.addCircle(
-                centerX - radius + translate,
-                centerY,
-                radius,
-                Path.Direction.CCW
-            )
-            canvas.drawPath(leftBallPath, leftBallPaint)
-            canvas.restore()
+        when (mCurrentDirection) {
+            Direction.LEFT -> {
+                canvas.save()
+                leftBallPath.reset()
+                leftBallPath.addCircle(
+                    centerX - radius + translate,
+                    centerY,
+                    radius,
+                    Path.Direction.CCW
+                )
+                canvas.drawPath(leftBallPath, leftBallPaint)
+                canvas.restore()
 
-            canvas.save()
-            rightBallPath.reset()
-            rightBallPath.addCircle(
-                centerX + radius - translate,
-                centerY,
-                radius * scale,
-                Path.Direction.CCW
-            )
-            canvas.drawPath(rightBallPath, rightBallPaint)
-            canvas.restore()
+                canvas.save()
+                rightBallPath.reset()
+                rightBallPath.addCircle(
+                    centerX + radius - translate,
+                    centerY,
+                    radius * scale,
+                    Path.Direction.CCW
+                )
+                canvas.drawPath(rightBallPath, rightBallPaint)
+                canvas.restore()
 
-            canvas.save()
-            coincideBallPath.reset()
-            coincideBallPath.op(leftBallPath, rightBallPath, Path.Op.INTERSECT)
-            canvas.drawPath(coincideBallPath, coincideBallPaint)
-            canvas.restore()
-        } else if (mCurrentDirection == Direction.RIGHT) {
-            canvas.save()
-            rightBallPath.reset()
-            rightBallPath.addCircle(centerX - radius + translate, centerY, 20f, Path.Direction.CCW)
-            canvas.drawPath(rightBallPath, rightBallPaint)
-            canvas.restore()
+                canvas.save()
+                coincideBallPath.reset()
+                coincideBallPath.op(leftBallPath, rightBallPath, Path.Op.INTERSECT)
+                canvas.drawPath(coincideBallPath, coincideBallPaint)
+                canvas.restore()
+            }
+            Direction.RIGHT -> {
+                canvas.save()
+                rightBallPath.reset()
+                rightBallPath.addCircle(
+                    centerX - radius + translate,
+                    centerY,
+                    20f,
+                    Path.Direction.CCW
+                )
+                canvas.drawPath(rightBallPath, rightBallPaint)
+                canvas.restore()
 
-            canvas.save()
-            leftBallPath.reset()
-            leftBallPath.addCircle(
-                centerX + radius - translate,
-                centerY,
-                20 * scale,
-                Path.Direction.CCW
-            )
-            canvas.drawPath(leftBallPath, leftBallPaint)
-            canvas.restore()
-            canvas.save()
-            coincideBallPath.reset()
-            coincideBallPath.op(leftBallPath, rightBallPath, Path.Op.INTERSECT)
-            canvas.drawPath(coincideBallPath, coincideBallPaint)
-            canvas.restore()
+                canvas.save()
+                leftBallPath.reset()
+                leftBallPath.addCircle(
+                    centerX + radius - translate,
+                    centerY,
+                    20 * scale,
+                    Path.Direction.CCW
+                )
+                canvas.drawPath(leftBallPath, leftBallPaint)
+                canvas.restore()
+                canvas.save()
+                coincideBallPath.reset()
+                coincideBallPath.op(leftBallPath, rightBallPath, Path.Op.INTERSECT)
+                canvas.drawPath(coincideBallPath, coincideBallPaint)
+                canvas.restore()
+            }
         }
 
     }
@@ -167,7 +174,8 @@ class DouYinLoadingDrawable:Drawable(),Animatable {
         }
         translateAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator) {
-                mCurrentDirection = if (mCurrentDirection == Direction.LEFT) Direction.RIGHT else Direction.LEFT
+                mCurrentDirection =
+                    if (mCurrentDirection == Direction.LEFT) Direction.RIGHT else Direction.LEFT
                 translate = 0f
                 leftAnimation()
             }
