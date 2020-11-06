@@ -32,7 +32,7 @@ class DouYinLoadingDrawable : Drawable(), Animatable {
     private var mHeight: Float = 0f
     private var centerX = 0f
     private var centerY: Float = 0f
-    private val radius = 20f
+    private val radius = 30f
 
 
     init {
@@ -92,7 +92,7 @@ class DouYinLoadingDrawable : Drawable(), Animatable {
                 rightBallPath.addCircle(
                     centerX - radius + translate,
                     centerY,
-                    20f,
+                    30f,
                     Path.Direction.CCW
                 )
                 canvas.drawPath(rightBallPath, rightBallPaint)
@@ -103,7 +103,7 @@ class DouYinLoadingDrawable : Drawable(), Animatable {
                 leftBallPath.addCircle(
                     centerX + radius - translate,
                     centerY,
-                    20 * scale,
+                    30 * scale,
                     Path.Direction.CCW
                 )
                 canvas.drawPath(leftBallPath, leftBallPaint)
